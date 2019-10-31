@@ -16,14 +16,14 @@
 </p>
 
 <h5 align="center">
-    A lot of games boot, but only a handful are playable, see the compatiblity list <a href="https://github.com/Ryujinx/Ryujinx-Games-List/issues" target="_blank">here</a>.
+    A lot of games boot, but only some are playable. See the compatiblity list <a href="https://github.com/Ryujinx/Ryujinx-Games-List/issues" target="_blank">here</a>.
 </h5>
 
 ## Usage
 
 To run this emulator, you need the [.NET Core 2.1 (or higher) SDK](https://dotnet.microsoft.com/download/dotnet-core).  
 
-If you use a pre-built version, you can use the graphical interface to run your games/homebrew apps.  
+If you use a pre-built version, you can use the graphical interface to run your games and homebrew.  
 
 If you build it yourself you will need to:  
 Run `dotnet run -c Release -- path\to\homebrew.nro` inside the Ryujinx project folder to run homebrew apps.  
@@ -41,54 +41,54 @@ The latest automatic build for Windows, macOS, and Linux can be found on the [Of
 
  - **Switch Keys**  
  
-   Everything on the Switch is encrypted, so if you want to run anything else, other than homebrews, you have to dump them from your console. To get more information please take a look at our [Keys Documentation](KEYS.md) *(Outdated)*
+   Everything on the Switch is encrypted, so if you want to run anything other than homebrew, you have to dump encryption keys from your console. To get more information please take a look at our [Keys Documentation](KEYS.md) *(Outdated)*
    
  - **Shared Fonts**  
  
-   Some games draw text using fonts files, those are what is called Shared Fonts.  
-   All you have to do is [Download](https://ryujinx.org/ryujinx_shared_fonts.zip) them and extract those files in `RyuFs\system\fonts`.
+   Some games draw text using fonts files called Shared Fonts.  
+   You can dump your own with [SharedFontDumper](https://github.com/simontime/SharedFontDumper), or download custom ones based on publicly available fonts [here](https://ryujinx.org/ryujinx_shared_fonts.zip), which you can then copy to `RyuFs\system\fonts`.
    
  - **FFmpeg Dependencies**  
  
-   Ryujinx has a basic implementation of `NVDEC` (video decoder used by the Switch's GPU).  
-   Many games use videos that use NVDEC, so you need to download [Zeranoe FFmpeg Builds](http://ffmpeg.zeranoe.com/builds/) for your system, and in **Shared** linking.  
+   Ryujinx has a basic implementation of `NVDEC`, a video decoder used by the Switch's GPU.  
+   Many games include videos that use NVDEC, so you need to download [Zeranoe's FFmpeg Builds](http://ffmpeg.zeranoe.com/builds/) for **Shared** linking and your computer's operating system.  
    When it's done, extract the `bin` folder directly into your Ryujinx folder.
    
  - **System Titles**  
  
-   Some of our System Modules implementation (like time) require [System Data Archives](https://switchbrew.org/wiki/Title_list#System_Data_Archives).  
-   You can install them by mounting your nand partition using [HacDiskMount](https://switchtools.sshnuke.net/) and copy the content in `RyuFs/nand/system`.
+   Some of our System Modules implementations, like time, require [System Data Archives](https://switchbrew.org/wiki/Title_list#System_Data_Archives).  
+   You can install them by mounting your nand partition using [HacDiskMount](https://switchtools.sshnuke.net/) and copying the content to `RyuFs/nand/system`.
    
  - **Executables**
  
-   Ryujinx is able to run games or homebrews.  
-   You need a hacked Switch to dump them ([Hack Guide](https://switch.hacks.guide/)).  
-   You need to dump your own games with [NxDumpTool](https://github.com/DarkMatterCore/nxdumptool) for XCI dump or [SwitchSDTool](https://github.com/CaitSith2/SwitchSDTool) for NSP dump.  
-   You can find homebrew on different related websites or on the [Switch Appstore](https://www.switchbru.com/appstore/).
+   Ryujinx is able to run both official games and homebrew.  
+   A hacked switch is need to dump games, which you can learn how to do (here](https://nh-server.github.io/switch-guide/)).  
+   Once you've hacked your switch, you need to dump your own games with [NxDumpTool](https://github.com/DarkMatterCore/nxdumptool) to get an XCI dump or [SwitchSDTool](https://github.com/CaitSith2/SwitchSDTool) to get an NSP dump.  
+   Homebrew is available on many websites, such as the [Switch Appstore](https://www.switchbru.com/appstore/).
 
 ## Features
 
  - **Audio**  
  
-   Everything for audio is partially supported. We currently use a C# wrapper for [libsoundio](http://libsound.io/) and we support [OpenAL](https://openal.org/downloads/OpenAL11CoreSDK.zip) (installation needed) too as a fallback. Our current Opus implementation is pretty incomplete.
+   Everything for audio is partially supported. We currently use a C# wrapper for [libsoundio](http://libsound.io/), and we support [OpenAL](https://openal.org/downloads/OpenAL11CoreSDK.zip) (installation needed) too as a fallback. Our current Opus implementation is pretty incomplete.
 
 - **CPU**  
 
-  The CPU emulator emulates an ARMv8 CPU, and only the new 64-bits ARMv8 instructions are implemented (with a few instructions still missing). It translates the ARM code to a custom IR and then it performs a few optimizations and turns that into x86 code.  
-  To handle that we use our own JIT called ARMeilleure, which has the custom IR and compiles the code to x86.  
-  ChocolArm is the old ARM emulator, is being replaced by ARMeilleure (It can still be enabled inside the configuration menu/file) and it works by translating the ARM code to .NET IL. The runtime JIT then compiles that to the platform CPU code. On .NET Core, the JIT is called RyuJIT (hence the project name, Ryujinx).
+  The CPU emulator, ARMeilleure, emulates an ARMv8 CPU, and currently only has support for the new 64-bit ARMv8 instructions (with a few instructions still missing). It translates the ARM code to a custom IR, performs a few optimizations, and turns that into x86 code.  
+  To handle that, we use our own JIT called ARMeilleure, which uses the custom IR and compiles the code to x86.  
+  ChocolArm is the old ARM emulator which worked by translating the ARM code to .NET IL. The runtime JIT then compiles that to the platform CPU code. On .NET Core, the JIT is called RyuJIT, hence the project name, Ryujinx. It is being replaced by ARMeilleure, but can still be enabled inside the configuration menu.
 
 - **GPU**  
 
-  The GPU emulator emulates the Switch Maxwell GPU, using the OpenGL API (4.2 minimum) through a custom build of OpenTK.
+  The GPU emulator emulates the Switch's Maxwell GPU using the OpenGL API (version 4.2 minimum) through a custom build of OpenTK.
   
 - **Input**  
 
-   We currently have Keyboard, Mouse, Touch, and JoyCon input support (emulated through the keyboard) and some controllers too. You can set-up everything inside the configuration menu/file.
+   We currently have keyboard, mouse, touch, and JoyCon input support (emulated through the keyboard) and some controllers too. You can set up everything inside the configuration menu.
   
 - **Configuration**  
  
-   The emulator has some options, like Dump shaders, Enabled/Disabled some Logging, Remap Controllers, Choose Controller, and more. You can set-up all of them through the graphical interface or manually through the Config File: `Config.json`.  
+   The emulator has settings for dumping shaders, enabling or disablong some logging, remapping controllers, and more. You can configure all of them through the graphical interface or manually through the config file (`Config.json`).  
 For more information [you can go here](CONFIG.md) *(Outdated)*.
 
 ## Compatibility
@@ -98,10 +98,10 @@ Don't hesitate to open a new issue if a game isn't already on there.
 
 ## Help
 
-If you have homebrew that currently doesn't work within the emulator, you can contact us through our Discord with the compiled *.NRO / *.NSO (and source code if possible) and we'll take note of whatever is causing the app / game to not work, on the watch list and fix it at a later date.  
-If you need help for setting up Ryujinx, you can go to our Discord server too.
+If you have homebrew that currently doesn't work within the emulator, you can contact us through our Discord with the compiled *.NRO/*.NSO (and source code if possible). We'll take note of whatever is causing the app/game to not work, on the watch list and fix it at a later date.  
+If you need help with setting up Ryujinx, you can ask questions in the support channel of our Discord server.
 
 ## Contact
 
-For contributions, help, support, and suggestions or if you just want to get in touch with the team; join our [Discord server](https://discord.gg/N2FmfVc)!  
+If you have contributions, need support, have suggestions, or just want to get in touch with the team, join our [Discord server](https://discord.gg/N2FmfVc)!  
 For donation support, please take a look at our [Patreon](https://www.patreon.com/ryujinx).
